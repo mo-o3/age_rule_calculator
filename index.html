@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Dating Age Calculator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: rgba(25, 25, 35, 0.9);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+        }
+        
+        header {
+            background: rgba(40, 40, 60, 0.95);
+            padding: 25px 20px;
+            text-align: center;
+            border-bottom: 2px solid #fdbb2d;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            background: linear-gradient(to right, #fdbb2d, #b21f1f);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: #ccc;
+            margin-bottom: 15px;
+        }
+        
+        .formula-box {
+            background: rgba(30, 30, 50, 0.7);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 0 20px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            text-align: center;
+            border: 1px solid #444;
+        }
+        
+        .input-section {
+            padding: 0 20px 20px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #fdbb2d;
+        }
+        
+        input {
+            width: 100%;
+            padding: 16px;
+            background: rgba(30, 30, 50, 0.7);
+            border: 2px solid #444;
+            border-radius: 12px;
+            color: white;
+            font-size: 18px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            border-color: #fdbb2d;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(253, 187, 45, 0.3);
+        }
+        
+        button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(to right, #fdbb2d, #b21f1f);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(178, 31, 31, 0.4);
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(178, 31, 31, 0.6);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        .result-section {
+            padding: 20px;
+            display: none;
+        }
+        
+        .result-card {
+            background: rgba(40, 40, 60, 0.95);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 2px solid #fdbb2d;
+        }
+        
+        .result-title {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #fdbb2d;
+        }
+        
+        .min-age {
+            font-size: 48px;
+            font-weight: 800;
+            color: #fff;
+            margin: 10px 0;
+            text-shadow: 0 0 10px rgba(253, 187, 45, 0.5);
+        }
+        
+        .range-box {
+            background: rgba(30, 30, 50, 0.7);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 18px;
+        }
+        
+        .breakdown {
+            background: rgba(30, 30, 50, 0.7);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            font-size: 14px;
+            text-align: left;
+            line-height: 1.6;
+        }
+        
+        .breakdown-title {
+            color: #fdbb2d;
+            margin-bottom: 10px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .explanation {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px dashed #444;
+            text-align: center;
+            font-style: italic;
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        .age-warning {
+            background: rgba(178, 31, 31, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+            border: 1px solid #b21f1f;
+        }
+        
+        .warning-icon {
+            color: #fdbb2d;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .footer {
+            padding: 20px;
+            text-align: center;
+            color: #aaa;
+            font-size: 13px;
+            border-top: 1px solid #333;
+            background: rgba(30, 30, 40, 0.8);
+        }
+        
+        .heart {
+            color: #b21f1f;
+            margin: 0 3px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 24px;
+            }
+            
+            .min-age {
+                font-size: 40px;
+            }
+            
+            input, button {
+                padding: 14px;
+                font-size: 16px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                border-radius: 15px;
+            }
+            
+            header {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 22px;
+            }
+            
+            .subtitle {
+                font-size: 14px;
+            }
+            
+            .result-card {
+                padding: 20px 15px;
+            }
+            
+            .min-age {
+                font-size: 36px;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            h1 {
+                font-size: 20px;
+            }
+            
+            .formula-box {
+                font-size: 12px;
+                padding: 12px;
+            }
+            
+            .min-age {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-heart"></i> Dating Age Calculator</h1>
+            <p class="subtitle">Refined "Half Age +7" with maturity adjustment</p>
+            <div class="formula-box">
+                min_age = max(18, (age/2 + 7) + 0.15 × e<sup>(0.05 × age)</sup>
+            </div>
+        </header>
+        
+        <div class="input-section">
+            <div class="input-group">
+                <label for="age"><i class="fas fa-user"></i> Your Age:</label>
+                <input type="number" id="age" placeholder="Enter age (18-89)" min="18" max="89">
+            </div>
+            
+            <button id="calculate-btn">
+                <i class="fas fa-calculator"></i> Calculate Minimum Dating Age
+            </button>
+        </div>
+        
+        <div class="result-section" id="result-section">
+            <div class="result-card">
+                <div class="result-title">At <span id="your-age">30</span> years:</div>
+                <div>Minimum recommended dating age is</div>
+                <div class="min-age" id="min-age">22</div>
+                
+                <div class="range-box">
+                    <div>Comfortable Range:</div>
+                    <div class="min-age" id="range">20 - 24</div>
+                </div>
+            </div>
+            
+            <div class="breakdown">
+                <div class="breakdown-title">How it's calculated:</div>
+                <div>• Base rule: (<span id="input-age">30</span> ÷ 2) + 7 = <span id="base-result">22.0</span></div>
+                <div>• Maturity adjustment: <span id="exp-adjustment">0.7</span></div>
+                <div>• Raw calculation: <span id="raw-result">22.7</span></div>
+                <div>• Rounded to nearest whole number</div>
+                <div id="boundary-text"></div>
+            </div>
+            
+            <div class="explanation">
+                <i class="fas fa-lightbulb"></i> Remember: This is just a fun guideline! Real compatibility depends on shared values and connection.
+            </div>
+        </div>
+        
+        <div class="age-warning" id="age-warning">
+            <div class="warning-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div>Beyond 90, you're too wise for dating rules!</div>
+            <div>Enjoy life freely!</div>
+        </div>
+        
+        <div class="footer">
+            <p>Designed with <span class="heart">❤</span> | Responsive for all devices</p>
+            <p>Respects real-life boundaries: 18+ only • Max 90 years</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calculateBtn = document.getElementById('calculate-btn');
+            const resultSection = document.getElementById('result-section');
+            const ageWarning = document.getElementById('age-warning');
+            const ageInput = document.getElementById('age');
+            
+            calculateBtn.addEventListener('click', calculate);
+            ageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') calculate();
+            });
+            
+            function calculate() {
+                // Get input
+                const age = parseInt(ageInput.value);
+                
+                // Reset displays
+                resultSection.style.display = 'none';
+                ageWarning.style.display = 'none';
+                
+                // Validate input
+                if (isNaN(age)) {
+                    alert("Please enter a valid age");
+                    return;
+                }
+                
+                // Apply 90+ boundary
+                if (age >= 90) {
+                    ageWarning.style.display = 'block';
+                    return;
+                }
+                
+                // Apply 18+ boundary
+                const effectiveAge = Math.max(18, age);
+                
+                // Core calculation
+                const baseRule = effectiveAge / 2 + 7;
+                const expAdjustment = 0.15 * Math.exp(0.05 * effectiveAge);
+                let rawResult = baseRule + expAdjustment;
+                
+                // Prevent min age > input age
+                if (rawResult > effectiveAge) {
+                    rawResult = effectiveAge - 2;
+                }
+                
+                // Apply boundaries
+                let minAge = Math.max(18, rawResult);
+                minAge = Math.round(minAge);
+                
+                // Create comfortable range (±2 years)
+                const minRange = Math.max(18, minAge - 2);
+                const maxRange = Math.min(89, minAge + 2);
+                
+                // Update DOM elements
+                document.getElementById('your-age').textContent = effectiveAge;
+                document.getElementById('min-age').textContent = minAge;
+                document.getElementById('range').textContent = minRange + ' - ' + maxRange;
+                document.getElementById('input-age').textContent = effectiveAge;
+                document.getElementById('base-result').textContent = baseRule.toFixed(1);
+                document.getElementById('exp-adjustment').textContent = expAdjustment.toFixed(1);
+                document.getElementById('raw-result').textContent = rawResult.toFixed(1);
+                
+                // Boundary explanation
+                let boundaryText = "";
+                if (effectiveAge < 18) {
+                    boundaryText = "• Applied 18+ boundary";
+                } else if (rawResult > effectiveAge) {
+                    boundaryText = "• Override: Minimum age cannot exceed your age";
+                }
+                document.getElementById('boundary-text').textContent = boundaryText;
+                
+                // Show results
+                resultSection.style.display = 'block';
+                
+                // Scroll to results
+                resultSection.scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            // Set initial example
+            ageInput.value = "30";
+            calculate();
+        });
+    </script>
+</body>
+</html>
