@@ -206,6 +206,42 @@
             margin: 0 3px;
         }
         
+        /* Fun message styles */
+        .fun-message {
+            background: rgba(75, 181, 67, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            display: none;
+            border: 1px solid #4bb543;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+        
+        .fun-icon {
+            color: #4bb543;
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+        
+        .fun-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #4bb543;
+        }
+        
+        .fun-text {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(75, 181, 67, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(75, 181, 67, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(75, 181, 67, 0); }
+        }
+        
         /* Responsive adjustments */
         @media (max-width: 600px) {
             h1 {
@@ -219,6 +255,10 @@
             input, button {
                 padding: 14px;
                 font-size: 16px;
+            }
+            
+            .fun-title {
+                font-size: 18px;
             }
         }
         
@@ -314,12 +354,23 @@
         <div class="input-section">
             <div class="input-group">
                 <label for="age"><i class="fas fa-user"></i> Your Age:</label>
-                <input type="number" id="age" placeholder="Enter age (18-89)" min="18" max="89">
+                <input type="number" id="age" placeholder="Enter age (18-89)" min="1" max="120">
             </div>
             
             <button id="calculate-btn">
                 <i class="fas fa-calculator"></i> Calculate Minimum Dating Age
             </button>
+        </div>
+        
+        <div class="fun-message" id="fun-message">
+            <div class="fun-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="fun-title" id="fun-title">Focus on Your Studies!</div>
+            <div class="fun-text" id="fun-text">
+                You're too young for dating rules! Focus on school, hobbies, and friendships. 
+                We'll calculate the minimum age when you're older!
+            </div>
         </div>
         
         <div class="result-section" id="result-section">
@@ -367,12 +418,35 @@
             const calculateBtn = document.getElementById('calculate-btn');
             const resultSection = document.getElementById('result-section');
             const ageWarning = document.getElementById('age-warning');
+            const funMessage = document.getElementById('fun-message');
             const ageInput = document.getElementById('age');
+            const funTitle = document.getElementById('fun-title');
+            const funText = document.getElementById('fun-text');
             
             calculateBtn.addEventListener('click', calculate);
             ageInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') calculate();
             });
+            
+            // Age-specific fun messages
+            const youngMessages = [
+                {
+                    title: "Focus on Your Studies!",
+                    text: "You're too young for dating rules! Focus on school, hobbies, and friendships. We'll calculate the minimum age when you're older!"
+                },
+                {
+                    title: "Enjoy Being a Kid!",
+                    text: "Dating can wait! Enjoy your childhood, play with friends, and explore the world. Come back when you're older!"
+                },
+                {
+                    title: "Playground Rules Apply!",
+                    text: "At your age, the only dating rule is sharing your snacks on the playground! Come back when you're 18."
+                },
+                {
+                    title: "Too Cool for Dating Rules!",
+                    text: "You're at the perfect age for adventures and friendships! Dating rules don't apply yet - enjoy your freedom!"
+                }
+            ];
             
             function calculate() {
                 // Get input
@@ -381,10 +455,20 @@
                 // Reset displays
                 resultSection.style.display = 'none';
                 ageWarning.style.display = 'none';
+                funMessage.style.display = 'none';
                 
                 // Validate input
                 if (isNaN(age)) {
                     alert("Please enter a valid age");
+                    return;
+                }
+                
+                // Show fun message for ages under 18
+                if (age < 18) {
+                    const randomMessage = youngMessages[Math.floor(Math.random() * youngMessages.length)];
+                    funTitle.textContent = randomMessage.title;
+                    funText.textContent = randomMessage.text;
+                    funMessage.style.display = 'block';
                     return;
                 }
                 
