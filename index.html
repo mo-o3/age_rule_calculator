@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Dating Age Calculator</title>
+    <title>Dating Age Calculator</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -53,18 +53,7 @@
         .subtitle {
             font-size: 16px;
             color: #ccc;
-            margin-bottom: 15px;
-        }
-        
-        .formula-box {
-            background: rgba(30, 30, 50, 0.7);
-            border-radius: 12px;
-            padding: 15px;
-            margin: 0 20px 20px;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            text-align: center;
-            border: 1px solid #444;
+            margin-bottom: 5px;
         }
         
         .input-section {
@@ -73,6 +62,7 @@
         
         .input-group {
             margin-bottom: 20px;
+            position: relative;
         }
         
         label {
@@ -267,14 +257,41 @@
                 font-size: 20px;
             }
             
-            .formula-box {
-                font-size: 12px;
-                padding: 12px;
-            }
-            
             .min-age {
                 font-size: 32px;
             }
+        }
+        
+        .info-tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 8px;
+            color: #fdbb2d;
+            cursor: pointer;
+        }
+        
+        .tooltip-content {
+            visibility: hidden;
+            width: 220px;
+            background-color: rgba(40, 40, 60, 0.95);
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 12px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 14px;
+            border: 1px solid #fdbb2d;
+        }
+        
+        .info-tooltip:hover .tooltip-content {
+            visibility: visible;
+            opacity: 1;
         }
     </style>
 </head>
@@ -283,9 +300,15 @@
         <header>
             <h1><i class="fas fa-heart"></i> Dating Age Calculator</h1>
             <p class="subtitle">Refined "Half Age +7" with maturity adjustment</p>
-            <div class="formula-box">
-                min_age = max(18, (age/2 + 7) + 0.15 × e<sup>(0.05 × age)</sup>
-            </div>
+            <p class="subtitle">
+                Advanced algorithm calculates appropriate age ranges
+                <span class="info-tooltip">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltip-content">
+                        Our algorithm enhances the classic rule with maturity factors to provide more realistic results for all ages
+                    </span>
+                </span>
+            </p>
         </header>
         
         <div class="input-section">
